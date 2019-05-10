@@ -156,4 +156,11 @@ class SiteController extends Controller
         $countries = Country::find()->orderBy('name')->all();
         var_dump($countries);
     }
+
+    public function actionAboutMe()
+    {
+        return $this->render('say', ['message' => 'hahaha']);
+
+
+    }
 }
