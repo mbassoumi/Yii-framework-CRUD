@@ -133,7 +133,7 @@ class ContactController extends Controller
 
             $model->upload($id);
 
-            return $this->redirect(Url::to(["contact/$id"]));
+            return $this->redirect(Url::to(["/contact/$id"]));
         } else {
 
             return $this->render('create', ['model' => $model, 'submitLink' => Url::to('/contact/store')]);

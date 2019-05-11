@@ -57,7 +57,7 @@ $config = [
                 'POST <controller:[\w-]+>' => '<controller>/store',
                 'GET <controller:[\w-]+>/<id:\d+>' => '<controller>/show',
                 'GET <controller:[\w-]+>/<id:\d+>/edit' => '<controller>/edit',
-                'POST <controller:[\w-]+>/<id:\d+>' => '<controller>',
+                'POST <controller:[\w-]+>/<id:\d+>' => '<controller>/update',
                 'DELETE <controller:[\w-]+>/<id:\d+>' => '<controller>/destroy',
             ],
         ],
