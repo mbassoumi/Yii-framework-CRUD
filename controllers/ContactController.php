@@ -5,15 +5,22 @@ namespace app\controllers;
 
 
 use app\models\Contact;
-use app\models\UploadForm;
 use Yii;
 use yii\data\Pagination;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 class ContactController extends Controller
 {
+
+    /**
+     * route: GET /contact
+     * return all contacts in the database [active and inactive]
+     *
+     * @return string
+     */
     public function actionIndex()
     {
         $query = Contact::find();
@@ -34,6 +41,12 @@ class ContactController extends Controller
         ]);
     }
 
+    /**
+     * route: GET /contact/active-contact
+     * return just the active contacts from the database
+     *
+     * @return string
+     */
     public function actionActiveContact()
     {
         $query = Contact::find()->where('status = 1');
@@ -55,24 +68,59 @@ class ContactController extends Controller
     }
 
 
+    /**
+     * route: GET /contact/{contact_id}
+     * return contact information
+     *
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionShow($id)
     {
         $contact = Contact::findOne($id);
+        if (is_null($contact)){
+            throw new NotFoundHttpException();
+        }
         return $this->render('show', ['contact' => $contact]);
     }
 
+    /**
+     * route: GET /contact/create
+     * return create contact view
+     *
+     * @return string
+     */
     public function actionCreate()
     {
         $model = new Contact();
         return $this->render('create', ['model' => $model, 'submitLink' => Url::to('/contact/store')]);
     }
 
+    /**
+     * route: GET /contact/{contact_id}/edit
+     * return edit view with contact information filled inside it
+     *
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionEdit($id)
     {
         $contact = Contact::findOne($id);
-        return $this->render('edit', ['model' => $contact, 'submitLink' => Url::to("/contact/{$id}/update")]);
+        if (is_null($contact)){
+            throw new NotFoundHttpException();
+        }
+        return $this->render('edit', ['model' => $contact, 'submitLink' => Url::to("/contact/{$id}")]);
     }
 
+    /**
+     * route: POST /contact/{contact_id}
+     * update the contact in database
+     *
+     * @param $id
+     * @return string|\yii\web\Response
+     */
     public function actionUpdate($id)
     {
         $model = Contact::findOne($id);
@@ -92,6 +140,12 @@ class ContactController extends Controller
         }
     }
 
+    /**
+     * route: POST /contact/store
+     * store the new contact in database
+     *
+     * @return string|\yii\web\Response
+     */
     public function actionStore()
     {
         $model = new Contact();
@@ -111,23 +165,25 @@ class ContactController extends Controller
 
     }
 
-    public function actionUpload()
+    /**
+     * route: DELETE /contact/{contact_id}
+     * delete contact from database
+     *
+     * @param $id
+     * @return \yii\web\Response
+     */
+    public function actionDestroy($id)
     {
-        $model = new UploadForm();
-
-        if (Yii::$app->request->isPost) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            $model->upload();
-            var_dump($model->imageFile);
-
-//            if ($model->upload()) {
-            // file is uploaded successfully
-//                return;
-//            }
+        try {
+            $contact = Contact::findOne($id);
+            if (is_null($contact)){
+                throw new \Exception("contact not found");
+            }
+            Contact::deleteAll("id = $id");
+            return $this->asJson(['message' => "$contact->first_name $contact->last_name has been deleted", 'redirect' => Url::to('/contact')]);
+        }catch (\Exception $exception){
+            return $this->asJson(['message' => $exception->getMessage()])->setStatusCode(500);
         }
-
-//        return $this->render('uploadform', ['model' => $model]);
     }
-
 
 }

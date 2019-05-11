@@ -10,11 +10,21 @@ use yii\helpers\FileHelper;
 class Contact extends ActiveRecord
 {
 
+    /**
+     * database table for contacts
+     *
+     * @return string
+     */
     public static function tableName()
     {
         return 'contacts';
     }
 
+    /**
+     * validations rules
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -26,6 +36,15 @@ class Contact extends ActiveRecord
         ];
     }
 
+
+    /**
+     * upload function for profile picture
+     * store the uploaded picture in /uploads/{contact_id}/{profile picture name}
+     *
+     * @param $id
+     * @return bool
+     * @throws \yii\base\Exception
+     */
     public function upload($id)
     {
         if ($this->validate()) {

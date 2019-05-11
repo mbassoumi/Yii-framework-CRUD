@@ -129,34 +129,6 @@ class SiteController extends Controller
     }
 
 
-    public function actionSay($message = 'Hello')
-    {
-        return $this->render('say', ['message' => $message]);
-    }
-
-
-    public function actionEntry()
-    {
-
-        $model = new EntryForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            // valid data received in $model
-
-            // do something meaningful here about $model ...
-            return $this->render('entry-confirm', ['model' => $model]);
-        } else {
-            // either the page is initially displayed or there is some validation error
-            return $this->render('entry', ['model' => $model]);
-        }
-    }
-
-    public function actionMajd()
-    {
-        $countries = Country::find()->orderBy('name')->all();
-        var_dump($countries);
-    }
-
     public function actionAboutMe()
     {
         return $this->render('say', ['message' => 'hahaha']);
