@@ -38,6 +38,7 @@ class ContactController extends Controller
         return $this->render('index', [
             'contacts' => $contacts,
             'pagination' => $pagination,
+            'withActions' => true
         ]);
     }
 
@@ -64,6 +65,7 @@ class ContactController extends Controller
         return $this->render('index', [
             'contacts' => $contacts,
             'pagination' => $pagination,
+            'withActions' => false
         ]);
     }
 

@@ -37,28 +37,46 @@ $this->title = 'Active Contacts'
 
 <table id="contacts-list">
     <tr>
+        <th>Profile Picture</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email Address</th>
-        <th>Profile Picture</th>
         <th>Marks</th>
         <th>status</th>
+        <?php if ($withActions) {
+            echo "<th>Actions</th>";
+        }
+        ?>
     </tr>
 
     <?php foreach ($contacts as $contact): ?>
-        <tr class="pointer" id="<?= $contact->id ?>">
+        <tr id="<?= $contact->id ?>">
+            <td><img src="<?= "/uploads/$contact->id/$contact->profile_picture" ?>"
+                     name="aboutme" width="40" height="40" class="img-circle"></td>
             <td><?= Html::encode($contact->first_name) ?></td>
             <td><?= Html::encode($contact->last_name) ?></td>
             <td><?= Html::encode($contact->email) ?></td>
-            <td>dummy profile pic</td>
             <td><?= $contact->marks ?></td>
             <td><?= $contact->status == 1 ? 'Active' : 'Inactive' ?></td>
+            <?php if ($withActions) {
+                echo "<td>
+                        &nbsp;
+                        <span data-id=$contact->id class=\"pointer delete-contact\" style=\"font-size: 1.5em; color: red; \"><i class=\"fas fa-trash\"></i></span>
+                        &nbsp;
+                        <span data-id=$contact->id class=\"pointer view-contact\"  style=\"font-size: 1.5em; color: blue; align-self: center\"><i class=\"fas fa-eye\"></i></span>
+                        &nbsp;
+                        <span data-id=$contact->id class=\"pointer update-contact\"  style=\"font-size: 1.5em; color: green; \"><i class=\"fas fa-pencil-alt\"></i></span>
+                    </td>";
+            }
+            ?>
         </tr>
     <?php endforeach; ?>
 
 
 </table>
-<?= LinkPager::widget(['pagination' => $pagination]) ?>
+<center>
+    <?= LinkPager::widget(['pagination' => $pagination]) ?>
+</center>
 
 
 </body>
@@ -66,13 +84,35 @@ $this->title = 'Active Contacts'
 
 <script>
     $(document).ready(function () {
+        $('.delete-contact').on('click', function (e) {
+            e.preventDefault();
+            var contact_id = this.getAttribute('data-id');
 
-        $('#contacts-list tr.pointer').click(function () {
-            var href = "<?= \yii\helpers\Url::to('/contact')   ?>/" + $(this).attr('id');
-            console.log(href);
-            if (href) {
-                window.location = href;
-            }
+            var url = "/contact/" + contact_id;
+
+            $.ajax({
+                method: "DELETE",
+                url: url,
+                success: function (data) {
+                    console.log(data.redirect);
+                    window.location.href = data.redirect;
+                    alert(data.message);
+                },
+                error: function (data) {
+                    console.log(data);
+                    alert(data.message);
+                }
+            })
+            alert('delete');
         });
+        $('.update-contact').on('click', function (e) {
+            var contact_id = this.getAttribute('data-id');
+            window.location.href = '/contact/' + contact_id + '/edit';
+        });
+        $('.view-contact').on('click', function (e) {
+            var contact_id = this.getAttribute('data-id');
+            window.location.href = '/contact/' + contact_id;
+        });
+
     });
 </script>
