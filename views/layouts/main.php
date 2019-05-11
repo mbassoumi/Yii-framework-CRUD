@@ -55,7 +55,6 @@ AppAsset::register($this);
             ['label' => 'All Contacts', 'url' => ['/contact/index']],
             ['label' => 'Active Contacts', 'url' => ['/contact/active-contact']],
             ['label' => 'Create a new Contact', 'url' => ['/contact/create']],
-            ['label' => 'About me', 'url' => ['/site/about-me']],
         ],
     ]);
     NavBar::end();

@@ -128,11 +128,4 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-
-    public function actionAboutMe()
-    {
-        return $this->render('say', ['message' => 'hahaha']);
-
-
-    }
 }

@@ -35,10 +35,12 @@ class ContactController extends Controller
             ->limit($pagination->limit)
             ->all();
 
+        $title = 'All Contacts';
         return $this->render('index', [
             'contacts' => $contacts,
             'pagination' => $pagination,
-            'withActions' => true
+            'withActions' => true,
+            'title' => $title
         ]);
     }
 
@@ -62,10 +64,12 @@ class ContactController extends Controller
             ->limit($pagination->limit)
             ->all();
 
+        $title = 'Active Contacts';
         return $this->render('index', [
             'contacts' => $contacts,
             'pagination' => $pagination,
-            'withActions' => false
+            'withActions' => false,
+            'title' => $title
         ]);
     }
 

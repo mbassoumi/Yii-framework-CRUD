@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 
-$this->title = 'Active Contacts'
+$this->title = $title
 ?>
 
 <!DOCTYPE html>
@@ -33,33 +33,42 @@ $this->title = 'Active Contacts'
 </head>
 <body>
 
-<h2>Active Contacts</h2>
+<h2><?= $title ?></h2>
 
-<table id="contacts-list">
-    <tr>
-        <th>Profile Picture</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email Address</th>
-        <th>Marks</th>
-        <th>status</th>
-        <?php if ($withActions) {
-            echo "<th>Actions</th>";
-        }
-        ?>
-    </tr>
-
-    <?php foreach ($contacts as $contact): ?>
-        <tr id="<?= $contact->id ?>">
-            <td><img src="<?= "/uploads/$contact->id/$contact->profile_picture" ?>"
-                     name="aboutme" width="40" height="40" class="img-circle"></td>
-            <td><?= Html::encode($contact->first_name) ?></td>
-            <td><?= Html::encode($contact->last_name) ?></td>
-            <td><?= Html::encode($contact->email) ?></td>
-            <td><?= $contact->marks ?></td>
-            <td><?= $contact->status == 1 ? 'Active' : 'Inactive' ?></td>
+<?php if (count($contacts) > 0) {
+    ?>
+    <table id="contacts-list">
+        <tr>
+            <th>Profile Picture</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email Address</th>
+            <th>Marks</th>
             <?php if ($withActions) {
-                echo "<td>
+                echo "<th>status</th>";
+                echo "<th>Actions</th>";
+            }
+            ?>
+        </tr>
+
+        <?php foreach ($contacts as $contact): ?>
+            <tr id="<?= $contact->id ?>">
+                <td><img src="<?= "/uploads/$contact->id/$contact->profile_picture" ?>"
+                         name="aboutme" width="40" height="40" class="img-circle"></td>
+                <td><?= Html::encode($contact->first_name) ?></td>
+                <td><?= Html::encode($contact->last_name) ?></td>
+                <td><?= Html::encode($contact->email) ?></td>
+                <td><?= $contact->marks ?></td>
+                <?php if ($withActions) {
+                    echo "<td>";
+                    if ($contact->status == 1){
+                        echo "<P style='color: green'>Active</P>";
+                    }else{
+                        echo "<p style='color: red'>Inactive</p>";
+                    }
+                    echo "</td>";
+                    echo "
+                    <td>
                         &nbsp;
                         <span data-id=$contact->id class=\"pointer delete-contact\" style=\"font-size: 1.5em; color: red; \"><i class=\"fas fa-trash\"></i></span>
                         &nbsp;
@@ -67,16 +76,34 @@ $this->title = 'Active Contacts'
                         &nbsp;
                         <span data-id=$contact->id class=\"pointer update-contact\"  style=\"font-size: 1.5em; color: green; \"><i class=\"fas fa-pencil-alt\"></i></span>
                     </td>";
-            }
-            ?>
-        </tr>
-    <?php endforeach; ?>
+                }
+                ?>
+            </tr>
+        <?php endforeach; ?>
 
 
-</table>
-<center>
-    <?= LinkPager::widget(['pagination' => $pagination]) ?>
-</center>
+    </table>
+    <center>
+        <?= LinkPager::widget(['pagination' => $pagination]) ?>
+    </center>
+
+    <?php
+} else {
+    ?>
+
+    <div class="container">
+        <div class="span3 well">
+
+            <center>
+                <h3>NO DATA TO BE DISPLAYED</h3>
+            </center>
+
+        </div>
+    </div>
+
+    <?php
+}
+?>
 
 
 </body>
