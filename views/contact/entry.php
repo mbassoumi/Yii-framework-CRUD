@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 
-<?php $form = ActiveForm::begin(['action' => $submitLink]); ?>
+<?php $form = ActiveForm::begin(['action' => $submitLink, 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <div class="container">
         <div class="row centered-form">
@@ -53,7 +53,7 @@ use yii\widgets\ActiveForm;
                                 </div>
                             </div>
                             <div class="form-group">
-                                <?= $form->field($model, 'profile_picture')->input('file')->label('Profile Picture') ?>
+                                <?= $form->field($model, 'profile_picture')->fileInput(['value' => "/uploads/$model->id/$model->profile_picture"])->label('Profile Picture') ?>
                             </div>
 
                             <?= Html::submitButton($buttonText, ['class' => 'btn btn-info btn-block']) ?>
@@ -64,3 +64,13 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 <?php ActiveForm::end(); ?>
+
+<script>
+    // $(document).ready(function (e) {
+    //     var profile_picture = $("#contact-profile_picture");
+    //     profile_picture.submit();
+    //     console.log(profile_picture.cl);
+        // document.Contact[profile_picture].click()
+    // })
+</script>
+

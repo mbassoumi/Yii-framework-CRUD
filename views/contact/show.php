@@ -13,15 +13,15 @@ $this->title = 'Profile'
 <div class="container">
     <div class="span3 well">
         <center>
-            <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R"
+            <img src="<?="/uploads/$contact->id/$contact->profile_picture" ?>"
                  name="aboutme" width="140" height="140" class="img-circle">
+
             <h3><?= Html::encode("{$contact->first_name} {$contact->last_name}") ?></h3>
             <h4><?= $contact->status == 1 ? '<p style="color: green">Active</p>' : '<p style="color: red">Inactive</p>' ?></h4>
             <em><?= Html::encode($contact->email) ?></em>
             <br>
             <em>Marks: <?= $contact->marks ?></em>
             <br>
-
 
         </center>
     </div>
